@@ -42,7 +42,7 @@ I personally have used env so that is how the example is.
 def get_user_input():
     user_input = input('Enter your name: ')
     if not all(x.isalpha() or x.isspace() for x in user_input):
-        raise TypeError("Invalid Input")
+        raise ValueError("Invalid Input")
     
     return user_input 
 
@@ -68,7 +68,7 @@ def send_email(to, subject, body):
 
     msg['Subject'] = subject
     msg['From'] = "noreply@company.com"
-    msg['To'] = to
+    msg['you'] = to
 
     s = smtplib.SMTP('localhost')
     s.sendmail(msg["From"], msg["you"], msg.as_string())
@@ -115,14 +115,13 @@ def save_to_db(data):
     query = f"INSERT INTO mytable (column1, column2) VALUES (%s , %s)"
 
     try: 
-        with pymysql.connect.connect(**db_config) as connection: 
+        with pymysql.connect(**db_config) as connection: 
             logger.info("Database Connection Established")
             with connection.cursor() as cursor:
 
                 cursor.execute(query,(data, 'second value'))
                 connection.commit()
                 logger.info("Transaction committed successfully")
-
     except pymysql.MySQLError as e:
         logger.error("Database Error: {e}")
 
